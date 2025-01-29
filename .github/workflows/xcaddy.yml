@@ -30,9 +30,18 @@ jobs:
           sync: rsync
           copyback: true
           prepare: |
-            pkg install -y curl pkgconf glib go wget 
+            pkg install -y curl pkgconf glib wget 
+            wget https://go.dev/dl/go1.23.5.freebsd-amd64.tar.gz
+            tar -C /usr/local -xzf go1.23.5.freebsd-amd64.tar.gz
+            export PATH=$PATH:/usr/local/go/bin
+            echo "---------------------------------------------------------------------------------"
+            go version
+            echo "---------------------------------------------------------------------------------"
           run: |
             set -ex
+            go install github.com/caddyserver/xcaddy/cmd/xcaddy@latest
+            xcaddy build --with github.com/caddy-dns/cloudflare \
+            --with github.com/caddyserver/forwardproxy=github.com/klzgrad/forwardproxy@naive
 
       - name: Archive
         run: |
