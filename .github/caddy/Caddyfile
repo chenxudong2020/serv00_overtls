@@ -1,0 +1,22 @@
+{
+	admin 0.0.0.0:54324
+	auto_https disable_redirects
+	servers {
+		protocols h1 h2
+	}
+}
+
+网址:54322 {
+	tls {
+		dns cloudflare 你的API密钥
+	}
+	encode gzip
+	handle_path /.well-known/acme-challenge/* {
+		file_server
+	}
+	reverse_proxy /admin/ 127.0.0.1:54323
+	reverse_proxy /log/ 127.0.0.1:54323
+	reverse_proxy /user/ 127.0.0.1:54323
+	file_server browse {
+		root /usr/home/druaruef/caddy/web
+	}

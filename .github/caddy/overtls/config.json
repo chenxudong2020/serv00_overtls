@@ -1,0 +1,10 @@
+{
+    "remarks": "INm6",
+    "tunnel_path": ["/admin/","/log/","/user/"],
+
+    "server_settings": {
+        "listen_host": "127.0.0.1",
+        "listen_port": 54323
+    }
+
+}
