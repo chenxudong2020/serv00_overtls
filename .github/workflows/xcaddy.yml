@@ -1,0 +1,49 @@
+name: Publish FreeBSD
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}-${{ github.event_name }}
+  cancel-in-progress: true
+
+jobs:
+  Publish_FreeBSD:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        toolchain: ["stable"] # ["nightly", "beta", "stable"] #
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build in FreeBSD
+        id: test
+        uses: vmactions/freebsd-vm@v1
+        with:
+          usesh: true
+          sync: rsync
+          copyback: true
+          prepare: |
+            pkg install -y curl pkgconf glib go wget 
+          run: |
+            set -ex
+            go install github.com/caddyserver/xcaddy/cmd/xcaddy@latest
+            xcaddy build --with github.com/caddy-dns/cloudflare \
+            --with github.com/caddyserver/forwardproxy=github.com/klzgrad/forwardproxy@naive
+
+      - name: Archive
+        run: |
+          mkdir -p pubdir
+          zip -j pubdir/overtls-x86_64-unknown-freebsd.zip ./target/release/overtls-bin ./config.json
+
+      - name: Publish
+        uses: softprops/action-gh-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          files: pubdir/*
+          # name: Automated build of ${{ github.sha }}
+          # tag_name: r${{ github.sha }}
+          # draft: false
+          # prerelease: true
