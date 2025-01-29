@@ -30,9 +30,10 @@ jobs:
           sync: rsync
           copyback: true
           prepare: |
-            pkg install -y curl pkgconf glib wget bash
+            pkg install -y curl pkgconf glib wget bash rsync
             wget https://go.dev/dl/go1.23.5.freebsd-amd64.tar.gz
             tar -C /usr/local -xzf go1.23.5.freebsd-amd64.tar.gz
+            export PATH=$PATH:/usr/local/go/bin
           run: |
             set -ex
             export PATH=$PATH:/usr/local/go/bin
