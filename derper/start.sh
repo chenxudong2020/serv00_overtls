@@ -1,19 +1,5 @@
 #!/bin/bash
-DERPR_PATH = "/usr/home/druaruef/derper"
-DERP_HOST = 127.0.0.1
-mkdir - p $DERPR_PATH/certs/
-"$DERPR_PATH/build_cert.sh" "$DERP_HOST" "$DERPR_PATH/certs/" "$DERPR_PATH/san.conf"
 
+#bash build_cert.sh
 
-DERP_STUN = true
-DERP_ADDR= :18889 
-DERP_HTTP_PORT = -1
-DERP_VERIFY_CLIENTS = false
-
-"$DERPR_PATH/derper" --hostname="$DERP_HOST" \
-        --certmode=manual \
-        --certdir="$DERPR_PATH/certs/" \
-        --stun="$DERP_STUN" \
-        --a="$DERP_ADDR" \
-        --http-port="$DERP_HTTP_PORT" \
-        --verify-clients="$DERP_VERIFY_CLIENTS"
+/home/druaruef/derper/derper -c /home/druaruef/derper/derper.conf --hostname="127.0.0.1" --certmode=manual --certdir="/home/druaruef/derper/certs/" --stun="true" --a=":18889" -stun-port="34788" --http-port="-1" --verify-clients="false"

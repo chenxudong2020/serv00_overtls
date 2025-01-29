@@ -1,8 +1,4 @@
-#!/bin/sh
-
-CERT_HOST=$1
-CERT_DIR=$2
-CONF_FILE=$3
+#!/bin/bash
 
 echo "[req]
 default_bits  = 2048
@@ -16,7 +12,7 @@ countryName = XX
 stateOrProvinceName = N/A
 localityName = N/A
 organizationName = Self-signed certificate
-commonName = $CERT_HOST: Self-signed certificate
+commonName = 127.0.0.1: Self-signed certificate
 
 [req_ext]
 subjectAltName = @alt_names
@@ -25,8 +21,8 @@ subjectAltName = @alt_names
 subjectAltName = @alt_names
 
 [alt_names]
-IP.1 = $CERT_HOST
-" > "$CONF_FILE"
+IP.1 = 127.0.0.1
+" > "/home/druaruef/derper/san.conf"
 
-mkdir -p "$CERT_DIR"
-openssl req -x509 -nodes -days 3650 -newkey rsa:2048 -keyout "$CERT_DIR/$CERT_HOST.key" -out "$CERT_DIR/$CERT_HOST.crt" -config "$CONF_FILE"
+mkdir -p "/home/druaruef/derper/certs/"
+openssl req -x509 -nodes -days 3650 -newkey rsa:2048 -keyout "/home/druaruef/derper/certs/127.0.0.1.key" -out "/home/druaruef/derper/certs/127.0.0.1.crt" -config "/home/druaruef/derper/san.conf"

@@ -1,24 +1,15 @@
 #!/bin/bash
 
 # 定义要检查的进程名和启动命令
-process_overtls="overtls-bin"
-cmd_overtls="/usr/home/druaruef/caddy/overtls/overtls-bin -r server -d -c /usr/home/druaruef/caddy/overtls/config.json > /dev/null 2>&1 &"
+process_derper="derper"
+cmd_derper="/home/druaruef/derper/derper -c /home/druaruef/derper/derper.conf --hostname="127.0.0.1" --certmode=manual --certdir="/home/druaruef/derper/certs/" --stun="true" --a=":18889" -stun-port="34788" --http-port="-1" --verify-clients="false" > /dev/null 2>&1 &"
 
-process_caddy="caddy"
-cmd_caddy="/usr/home/druaruef/caddy/caddy start --config /usr/home/druaruef/caddy/Caddyfile"
 
-# 检查并启动 overtls 进程
-if ! pgrep -x "$process_overtls" > /dev/null; then
-    echo "Starting $process_overtls..."
-    nohup $cmd_overtls
+# 检查并启动 derper 进程
+if ! pgrep -x "$process_derper" > /dev/null; then
+    echo "Starting $process_derper..."
+    nohup $cmd_derper
 else
-    echo "$process_overtls is already running."
+    echo "$process_derper is already running."
 fi
-
-# 检查并启动 caddy 进程
-if ! pgrep -x "$process_caddy" > /dev/null; then
-    echo "Starting $process_caddy..."
-    eval $cmd_caddy
-else
-    echo "$process_caddy is already running."
-fi
+ 
