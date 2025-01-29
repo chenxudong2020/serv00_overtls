@@ -33,9 +33,6 @@ jobs:
             pkg install -y curl pkgconf glib go wget 
           run: |
             set -ex
-            go install github.com/caddyserver/xcaddy/cmd/xcaddy@latest
-            xcaddy build --with github.com/caddy-dns/cloudflare \
-            --with github.com/caddyserver/forwardproxy=github.com/klzgrad/forwardproxy@naive
 
       - name: Archive
         run: |
